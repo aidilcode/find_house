@@ -1,0 +1,61 @@
+part of 'widgets.dart';
+
+class CustomCategory extends StatelessWidget {
+  final int selectedIndex;
+  final List<String> titles;
+  final Function(int) onTap;
+
+  CustomCategory(
+      {Key key, @required this.titles, this.selectedIndex, this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+      height: 30,
+      child: Stack(
+        children: [
+          Column(
+              children: titles
+                  .map(
+                    (e) => ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: titles.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          if (onTap != null) {
+                            onTap(titles.indexOf(e));
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(
+                            left: kDefaultPadding,
+                            // At end item it add extra 20 right  padding
+                            right: index == titles.length - 1
+                                ? kDefaultPadding
+                                : 0,
+                          ),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                          decoration: BoxDecoration(
+                            color: index == selectedIndex
+                                ? Colors.white.withOpacity(0.4)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            titles[index],
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList())
+        ],
+      ),
+    );
+  }
+}
